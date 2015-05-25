@@ -1,0 +1,250 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!-- saved from url=(0063)http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/node5.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Conditional expressions</title>
+<meta name="description" content="Conditional expressions">
+<meta name="keywords" content="schemetutorial">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+
+
+<meta name="Generator" content="LaTeX2HTML v99.2beta6">
+<meta http-equiv="Content-Style-Type" content="text/css">
+
+<link rel="STYLESHEET" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/schemetutorial.css">
+
+<link rel="next" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/node6.html">
+<link rel="previous" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/node4.html">
+<link rel="up" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/schemetutorial.html">
+<link rel="next" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/node6.html">
+</head>
+
+<body>
+<!--Navigation Panel-->
+<a name="tex2html225" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/node6.html">
+<img width="37" height="24" align="BOTTOM" border="0" alt="next" src="./Conditional expressions_files/next.png"></a> 
+<a name="tex2html221" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/schemetutorial.html">
+<img width="26" height="24" align="BOTTOM" border="0" alt="up" src="./Conditional expressions_files/up.png"></a> 
+<a name="tex2html215" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/node4.html">
+<img width="63" height="24" align="BOTTOM" border="0" alt="previous" src="./Conditional expressions_files/prev.png"></a> 
+<a name="tex2html223" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/node1.html">
+<img width="65" height="24" align="BOTTOM" border="0" alt="contents" src="./Conditional expressions_files/contents.png"></a>  
+<br>
+<b> Next:</b> <a name="tex2html226" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/node6.html">Logical composition operators</a>
+<b> Up:</b> <a name="tex2html222" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/schemetutorial.html">Scheme Tutorial</a>
+<b> Previous:</b> <a name="tex2html216" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/node4.html">Getting started</a>
+ &nbsp; <b>  <a name="tex2html224" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/node1.html">Contents</a></b> 
+<br>
+<br>
+<!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<a name="CHILD_LINKS"><strong>Subsections</strong></a>
+
+<ul>
+<li><a name="tex2html227" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/node5.html#SECTION00510000000000000000">Conditional expressions using if</a>
+</li><li><a name="tex2html228" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/node5.html#SECTION00520000000000000000">Conditional expressions using cond</a>
+</li><li><a name="tex2html229" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/node5.html#SECTION00530000000000000000">Conditional expressions using case</a>
+</li></ul>
+<!--End of Table of Child-Links-->
+<hr>
+
+<h1><a name="SECTION00500000000000000000">
+Conditional expressions</a>
+</h1>
+
+<p>
+Case analysis can be implemented with the conditional expressions 
+<tt>cond</tt>, <tt>case</tt> and <tt>if</tt>. Also the logical expressions
+<tt>and</tt>, <tt>or</tt> and <tt>not</tt> can be used. 
+
+</p><p>
+
+</p><h1><a name="SECTION00510000000000000000">
+Conditional expressions using if</a>
+</h1>
+
+<p>
+The syntax of <tt>if</tt> is as follows:
+</p><pre>(if condition consequent alternative)
+</pre>
+or
+<pre>(if condition consequent)
+</pre> 	
+If the condition is true, then the value of consequent is returned,
+otherwise the alternative is returned. If no alternative is given and
+the condition is false, the return value will be unspecified.
+
+<p>
+The usage of <tt>cond</tt> and <tt>if</tt> can best be explained with some
+examples. Let's say we wish to write a procedure that takes two arguments and
+returns the square of the smaller argument. There are several ways of doing 
+this, but let us use an <tt>if</tt> expression to accomplish our task.
+</p><pre>(define minsquare
+  (lambda (a b)
+    (if (&lt; a b)
+        (square a)
+        (square b))))
+</pre>
+
+<p>
+<i>minsquare</i> is called with two arguments, for example
+</p><pre>&gt;(minsquare 4 5)
+16
+</pre>
+First we check if 4 is smaller than 5, which it is. Hence, the value of
+<i>(square a)</i> is returned. 
+
+<p>
+In some cases it is better to use a logical expression instead of 
+<tt>if</tt> or <tt>cond</tt> expressions. Procedures written using logical
+expressions can usually be written in a clearer and more compact way. Let us
+define a procedure for finding out if three given points form a sawtooth. We
+will write three versions of the procedure. The first one uses <tt>if</tt>, the
+second one uses <tt>cond</tt> and the third one uses logical expressions.
+</p><pre>(define sawtooth?
+  (lambda (x1 x2 x3)
+    (if (&lt; x1 x2)
+        (&gt; x2 x3)
+        (if (&gt; x1 x2)
+            (&lt; x2 x3)
+            #f))))
+
+(define sawtooth?
+  (lambda (x1 x2 x3)
+    (cond ((&lt; x1 x2) (&gt; x2 x3))
+          ((&gt; x1 x2) (&lt; x2 x3))
+          (else #f))))
+
+(define sawtooth?
+  (lambda (x1 x2 x3)
+    (or (and (&lt; x1 x2) (&gt; x2 x3))
+        (and (&gt; x1 x2) (&lt; x2 x3)))))
+</pre>
+
+<p>
+
+</p><h1><a name="SECTION00520000000000000000">
+Conditional expressions using cond</a>
+</h1>
+
+<p>
+The <tt>cond</tt> expression has the following syntax:
+
+</p><p>
+</p><pre>(cond (condition1 consequent1)
+      (condition2 consequent2)
+      .
+      .
+      .
+      (else alternative))
+</pre>
+
+<p>
+The conditional expressions are evaluated one at a time until one evaluates 
+to true, in which case the corresponding consequent is evaluated and returned 
+as the value of the whole <tt>cond</tt> expression. If all conditions are 
+false, the <tt>cond</tt> expression will have the value of the alternative 
+specified in the <tt>else</tt> clause. The <tt>else</tt> clause is optional, 
+but if  it is left out and all the conditions are false, the return value will 
+be unspecified. 
+
+</p><p>
+For example, let's write a procedure that takes three arguments and returns
+the sum of the two smallest arguments. We will write the procedure using
+<tt>cond</tt> expressions:
+</p><pre>(define sum-of-smallest
+  (lambda (x y z)
+    (cond ((or (and (&lt;= x y) (&lt;= y z))
+               (and (&lt;= y x) (&lt;= x z)))
+           (+ x y))
+          ((or (and (&lt;= x z) (&lt;= z y))
+               (and (&lt;= z x) (&lt;= x y)))
+           (+ x z))
+          (else (+ y z)))))
+</pre>
+
+<p>
+To see how it works, let's try with a few examples:
+</p><pre>&gt; (sum-of-smallest 1 2 3)
+3
+&gt; (sum-of-smallest 3 3 3)
+6
+&gt; (sum-of-smallest 10 5 7)
+12
+</pre>
+
+<p>
+
+</p><h1><a name="SECTION00530000000000000000">
+Conditional expressions using case</a>
+</h1>
+
+<p>
+The <tt>case</tt> expression is a derived expression and has the following
+syntax:
+</p><pre>(case key clause1 clause2 ...)
+</pre>
+
+<p>
+The <i>key</i> may be any expression and the clause should have the
+following form:
+
+</p><p>
+</p><pre>((datum1 ...) expression1 expression2 ...)
+</pre>
+
+<p>
+Each <i>datum</i> is an external representation of a Scheme object and they
+must all be distinct. The last clause may be an else clause of the form:
+</p><pre>(else expr1 expr2 ...)
+</pre>
+
+<p>
+First <i>key</i> is evaluated and the result is compared against 
+each <i>datum</i>. If the result is equivalent according to <tt>eqv?</tt>
+then the expressions in the corresponding clause are evaluated from left to
+right and the result of the last expression in the clause is returned as the
+result of the <tt>case</tt> expression. If no <i>datum</i> is equivalent to
+the <i>key</i>, the expressions of the <tt>else</tt> clause will be 
+evaluated and returned as the value of the <tt>case</tt> expression. If there 
+is neither a <i>datum</i> equivalent to the <i>key</i> nor an 
+<tt>else</tt> clause, the return value is unspecified.
+
+</p><p>
+For example:
+</p><pre>&gt; (case (+ 3 4)
+    ((7) 'seven)
+    ((2) 'two)
+    (else 'nothing))
+seven
+&gt; (case 'a
+    ((a b c d) 'first)
+    ((e f g h) 'second)
+    (else 'rest))
+first
+</pre>
+
+<p>
+</p><hr>
+<!--Navigation Panel-->
+<a name="tex2html225" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/node6.html">
+<img width="37" height="24" align="BOTTOM" border="0" alt="next" src="./Conditional expressions_files/next.png"></a> 
+<a name="tex2html221" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/schemetutorial.html">
+<img width="26" height="24" align="BOTTOM" border="0" alt="up" src="./Conditional expressions_files/up.png"></a> 
+<a name="tex2html215" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/node4.html">
+<img width="63" height="24" align="BOTTOM" border="0" alt="previous" src="./Conditional expressions_files/prev.png"></a> 
+<a name="tex2html223" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/node1.html">
+<img width="65" height="24" align="BOTTOM" border="0" alt="contents" src="./Conditional expressions_files/contents.png"></a>  
+<br>
+<b> Next:</b> <a name="tex2html226" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/node6.html">Logical composition operators</a>
+<b> Up:</b> <a name="tex2html222" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/schemetutorial.html">Scheme Tutorial</a>
+<b> Previous:</b> <a name="tex2html216" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/node4.html">Getting started</a>
+ &nbsp; <b>  <a name="tex2html224" href="http://www.cs.hut.fi/Studies/T-93.210/schemetutorial/node1.html">Contents</a></b> 
+<!--End of Navigation Panel-->
+<address>
+Timo Lilja
+2001-09-11
+</address>
+
+
+</body></html>
